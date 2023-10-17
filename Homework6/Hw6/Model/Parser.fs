@@ -3,12 +3,6 @@
 open System
 open Hw6.Calculator
 open Hw6.MaybeBuilder
-
-let isArgLengthSupported (args:string[]): Result<'a,'b> =
-    let isSupported = args.Length = 3
-    match isSupported with
-    | true -> Ok args
-    | false -> Error "Wrong arg length" 
     
 
 let parseOperation(arg:string):Result<CalculatorOperation,string> =
@@ -38,7 +32,7 @@ let inline isOperationSupported (arg1, operation, arg2): Result<('a * Calculator
     | CalculatorOperation.Minus -> Ok (arg1, operation, arg2)
     | CalculatorOperation.Multiply -> Ok (arg1, operation, arg2)
     | CalculatorOperation.Divide -> Ok (arg1, operation, arg2)
-    | _ -> Error $"Could not parse value '{operation}'" 
+    | _ -> Error $"Operation not supported: '{operation}'" 
 
 let convertValue (arg:string) : Result<double,string> = 
     match Double.TryParse arg with
@@ -57,9 +51,8 @@ let convertValues (args:string[]) : Result<('a * CalculatorOperation * 'b), stri
 
 let parseArgs (args: string[]): Result<('a * CalculatorOperation * 'b), string> = 
     maybe
-        {
-        let! supportedArgs = isArgLengthSupported args           
-        let! convertedArgs = convertValues supportedArgs        
+        {                 
+        let! convertedArgs = convertValues args        
         return convertedArgs
         }    
         
