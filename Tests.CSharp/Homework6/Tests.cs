@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Net;
 using Hw6;
+using Newtonsoft.Json.Linq;
 using Tests.RunLogic.Attributes;
 
 namespace Tests.CSharp.Homework6;
@@ -84,6 +85,12 @@ public class BasicTests : IClassFixture<CustomWebApplicationFactory<App.Startup>
     public async Task TestParserDividingByZero()
     {
         await RunTest("15.6", "0", "Divide", "DivideByZero", HttpStatusCode.OK, true);
+    }
+
+    [Fact]
+    public async Task TestPowOperation()
+    {
+        await RunTest("2", "8", "Pow", "Operation not supported: 'Pow'", HttpStatusCode.BadRequest);
     }
 
     private async Task RunTest(string value1, string value2, string operation, string expectedValueOrError,
