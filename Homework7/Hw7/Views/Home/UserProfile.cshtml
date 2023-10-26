@@ -1,8 +1,8 @@
 @using Hw7.MyHtmlServices
 @model Hw7.Models.UserProfile
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("UserProfile", "Home", FormMethod.Post))
 {
-    @Html.MyEditorForModel()
+    @Html.MakeFormInputs()
     <button type="submit" class="btn btn-primary mt-2">Sign up</button>
 }
