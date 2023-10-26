@@ -20,12 +20,17 @@ public static class TestHelper
         return doc.DocumentNode.SelectNodes($"//label[@for=\"{propertyName}\"]").First();
     }
 
+    public static HtmlNodeCollection GetLabelForPropertyById(string html, string propertyName)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        return doc.DocumentNode.SelectNodes($"//label[@id=\"unsupported: {propertyName}\"]");
+    }
+
     public static string GetValidationMessageFromSpan(string html, string propertyName)
     {
         try
         {
-            var n = GetLabelForProperty(html, propertyName);
-            var a = n.SelectNodes("../span");
             return GetLabelForProperty(html, propertyName).SelectNodes("../span").First().InnerHtml.RemoveNewLine();
         }
         catch (ArgumentNullException)
@@ -48,6 +53,22 @@ public static class TestHelper
             { "MiddleName", model.MiddleName! },
             { "Age", model.Age.ToString() },
             { "Sex", model.Sex.ToString() }
+        });
+
+        var response = await client.PostAsync(url, content);
+        return await response.Content.ReadAsStringAsync();
+    }
+
+    public static async Task<string> SendUnsupportedForm(HttpClient client, string url, UnsopportedModel model)
+    {
+        var content = new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            { "FirstName", model.FirstName },
+            { "LastName", model.LastName },
+            { "MiddleName", model.MiddleName! },
+            { "Age", model.Age.ToString() },
+            { "Sex", model.Sex.ToString() },
+            { "Date", model.Date.ToString() }
         });
 
         var response = await client.PostAsync(url, content);

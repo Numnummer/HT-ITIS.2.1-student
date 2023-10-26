@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -70,7 +71,9 @@ public static class HtmlHelperExtensions
         {
             return GetEnumInput(modelProperty);
         }
-        return new HtmlContentBuilder().Append("Type not supported");
+        var spanTagBuilder = new TagBuilder("label");
+        spanTagBuilder.Attributes.Add("id", "unsupported: "+modelProperty.Name);
+        return spanTagBuilder;
     }
 
     private static IHtmlContent GetEnumInput(PropertyInfo modelProperty)
