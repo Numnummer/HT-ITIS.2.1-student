@@ -14,33 +14,37 @@ public static class HtmlHelperExtensions
         var modelType = helper.ViewData.ModelExplorer.ModelType;
         var model = helper.ViewData.Model;
         var modelProperties = modelType.GetProperties();
+
         foreach (var modelProperty in modelProperties)
         {
-            divTagBuilder.InnerHtml.AppendHtml(GetLabel(modelProperty));
+            divTagBuilder.InnerHtml.AppendHtml("<div>");
+            divTagBuilder.InnerHtml.AppendHtml(GetLabel(modelProperty, model));
             divTagBuilder.InnerHtml.AppendHtml(GetInput(modelProperty));
+            divTagBuilder.InnerHtml.AppendHtml(GetValidator(modelProperty, model));
+            divTagBuilder.InnerHtml.AppendHtml("</div>");
             divTagBuilder.InnerHtml.AppendHtml("<br>");
         }
-        divTagBuilder.InnerHtml.AppendHtml(GetValidator(modelProperties, model));
         return divTagBuilder.InnerHtml;
     }
 
-    private static IHtmlContent? GetValidator(PropertyInfo[] modelProperties, object? model)
+    private static IHtmlContent? GetValidator(PropertyInfo modelProperty, object? model)
     {
         if (model == null)
         {
             return null;
         }
-        foreach (var modelProperty in modelProperties)
+
+        var attributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
+        foreach (var attribute in attributes)
         {
-            var attributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
-            foreach (var attribute in attributes)
+            if (!attribute.IsValid(modelProperty.GetValue(model)))
             {
-                if (!attribute.IsValid(modelProperty.GetValue(model)))
-                {
-                    return new HtmlContentBuilder().Append(attribute.ErrorMessage);
-                }
+                var spanTagBuilder = new TagBuilder("span");
+                spanTagBuilder.InnerHtml.AppendHtml(attribute.ErrorMessage);
+                return spanTagBuilder;
             }
         }
+
         return null;
     }
 
@@ -50,14 +54,16 @@ public static class HtmlHelperExtensions
         {
             var inputTagBuilder = new TagBuilder("input");
             inputTagBuilder.Attributes.Add("type", "text");
-            inputTagBuilder.Attributes.Add("asp-for", modelProperty.Name);
+            inputTagBuilder.Attributes.Add("name", modelProperty.Name);
+            inputTagBuilder.Attributes.Add("id", modelProperty.Name);
             return inputTagBuilder;
         }
         if (modelProperty.PropertyType.Equals(typeof(int)))
         {
             var inputTagBuilder = new TagBuilder("input");
             inputTagBuilder.Attributes.Add("type", "number");
-            inputTagBuilder.Attributes.Add("asp-for", modelProperty.Name);
+            inputTagBuilder.Attributes.Add("name", modelProperty.Name);
+            inputTagBuilder.Attributes.Add("id", modelProperty.Name);
             return inputTagBuilder;
         }
         if (modelProperty.PropertyType.IsEnum)
@@ -70,7 +76,8 @@ public static class HtmlHelperExtensions
     private static IHtmlContent GetEnumInput(PropertyInfo modelProperty)
     {
         var selectTagBuilder = new TagBuilder("select");
-        selectTagBuilder.Attributes.Add("asp-for", modelProperty.Name);
+        selectTagBuilder.Attributes.Add("name", modelProperty.Name);
+        selectTagBuilder.Attributes.Add("id", modelProperty.Name);
         foreach (var enumName in modelProperty.PropertyType.GetEnumNames())
         {
             var optionTagBuilder = new TagBuilder("option");
@@ -81,15 +88,17 @@ public static class HtmlHelperExtensions
         return selectTagBuilder;
     }
 
-    private static IHtmlContent GetLabel(PropertyInfo modelProperty)
+    private static IHtmlContent GetLabel(PropertyInfo modelProperty, object? model)
     {
         var label = new TagBuilder("label");
+        label.Attributes.Add("for", modelProperty.Name);
         var propertyAttributes = modelProperty.GetCustomAttributes();
+
         foreach (var attribute in propertyAttributes)
         {
             if (attribute is DisplayAttribute displayAttribute)
             {
-                label.InnerHtml.Append(displayAttribute.Name);
+                label.InnerHtml.AppendHtml(displayAttribute.Name);
                 return label;
             }
         }
@@ -100,6 +109,7 @@ public static class HtmlHelperExtensions
     private static string SplitCamelCase(string name)
     {
         string[] words = Regex.Split(name, @"(?=\p{Lu})");
-        return string.Join(" ", words);
+        var newName = words.Skip(1).ToArray();
+        return string.Join(" ", newName);
     }
 }
