@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hw13", "Homework13\Hw.13\Hw
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework13", "Homework13", "{245E29C9-CF93-47FF-8788-34FBB6404AEA}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsConsoleClient", "FsConsoleClient\FsConsoleClient.fsproj", "{3A71F23D-E1EF-426A-8668-9C29CA96C8F5}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FsConsoleClient", "FsConsoleClient\FsConsoleClient.fsproj", "{3A71F23D-E1EF-426A-8668-9C29CA96C8F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 {
     "msbuild-sdks": {
-      "Microsoft.NET.Sdk.IL": "6.0.0"
+      "Microsoft.NET.Sdk.IL": "6.0"
     }
   }

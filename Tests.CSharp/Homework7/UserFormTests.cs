@@ -95,8 +95,11 @@ public class UserFormTests : IClassFixture<WebApplicationFactory<Hw7.Program>>
         //arrange
         var model = new BaseModel
         {
-            FirstName = TestHelper.LongString, LastName = TestHelper.LongString, MiddleName = TestHelper.LongString,
-            Age = 15, Sex = Sex.Male
+            FirstName = TestHelper.LongString,
+            LastName = TestHelper.LongString,
+            MiddleName = TestHelper.LongString,
+            Age = 15,
+            Sex = Sex.Male
         };
         var response = await TestHelper.SendForm(_client, _url, model);
 
