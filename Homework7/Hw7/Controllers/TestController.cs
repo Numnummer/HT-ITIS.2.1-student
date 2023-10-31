@@ -17,5 +17,16 @@ namespace Hw7.Controllers
         {
             return View(testModel);
         }
+
+        public ActionResult UnsupportedModel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UnsupportedModel(UnsupportedModel unsopportedModel)
+        {
+            return View(unsopportedModel);
+        }
     }
 }

@@ -59,7 +59,7 @@ public static class TestHelper
         return await response.Content.ReadAsStringAsync();
     }
 
-    public static async Task<string> SendUnsupportedForm(HttpClient client, string url, UnsopportedModel model)
+    public static async Task<string> SendUnsupportedForm(HttpClient client, string url, UnsupportedModel model)
     {
         var content = new FormUrlEncodedContent(new Dictionary<string, string>
         {

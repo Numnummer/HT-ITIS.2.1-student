@@ -13,7 +13,7 @@ namespace Tests.CSharp.Homework7
     public class UnsupportedTypeFormTests : IClassFixture<WebApplicationFactory<Hw7.Program>>
     {
         private readonly HttpClient _client;
-        private readonly string _url = "/UnsupportedType/Index";
+        private readonly string _url = "/Test/UnsupportedModel";
 
         public UnsupportedTypeFormTests(WebApplicationFactory<Hw7.Program> fixture)
         {
@@ -24,7 +24,7 @@ namespace Tests.CSharp.Homework7
         public async Task PostUnsupportedForm_ModelWithRequiredProps_OnePropertyTypeIsNotSupported()
         {
             //arrange
-            var model = new UnsopportedModel
+            var model = new UnsupportedModel
             {
                 FirstName = TestHelper.LongString,
                 LastName = TestHelper.LongString,
@@ -46,7 +46,7 @@ namespace Tests.CSharp.Homework7
         public async Task GetUnsupportedForm_ModelWithRequiredProps_OnePropertyTypeIsNotSupported()
         {
             //arrange
-            var model = new UnsopportedModel
+            var model = new UnsupportedModel
             {
                 FirstName = TestHelper.LongString,
                 LastName = TestHelper.LongString,

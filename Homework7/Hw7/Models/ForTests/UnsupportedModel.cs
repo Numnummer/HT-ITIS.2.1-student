@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Hw7.Models.ForTests
 {
-    public class UnsopportedModel : BaseModel
+    public class UnsupportedModel : BaseModel
     {
         //without [Display(Name = "Имя")]
         [Required(ErrorMessage = Messages.RequiredMessage)]
