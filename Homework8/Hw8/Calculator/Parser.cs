@@ -14,14 +14,17 @@
             };
         }
 
-        public (double, double, bool) ParseValues(string value1, string value2)
+        public bool TryParseValues(string value1, string value2,
+            out double number1,
+            out double number2)
         {
-            if (double.TryParse(value1, out var number1)
-                && double.TryParse(value2, out var number2))
+            if (double.TryParse(value1, out number1)
+                && double.TryParse(value2, out number2))
             {
-                return (number1, number2, true);
+                return true;
             }
-            else return (0, 0, false);
+            number1=number2=0;
+            return false;
         }
     }
 }

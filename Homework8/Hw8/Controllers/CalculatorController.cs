@@ -13,26 +13,26 @@ public class CalculatorController : Controller
         string operation,
         string val2)
     {
-        var numbers = parser.ParseValues(val1, val2);
-        if (numbers.Item3==false)
+        var isValuesCorrect = parser.TryParseValues(val1, val2, out var number1, out var number2);
+        if (!isValuesCorrect)
         {
             return Content(Messages.InvalidNumberMessage);
         }
         switch (parser.ParseOperation(operation))
         {
             case Operation.Plus:
-                return calculator.Plus(numbers.Item1, numbers.Item2);
+                return calculator.Plus(number1, number2);
             case Operation.Minus:
-                return calculator.Minus(numbers.Item1, numbers.Item2);
+                return calculator.Minus(number1, number2);
             case Operation.Multiply:
-                return calculator.Multiply(numbers.Item1, numbers.Item2);
+                return calculator.Multiply(number1, number2);
             case Operation.Divide:
                 {
-                    if (numbers.Item2==0)
+                    if (number2==0)
                     {
                         return Content(Messages.DivisionByZeroMessage);
                     }
-                    return calculator.Divide(numbers.Item1, numbers.Item2);
+                    return calculator.Divide(number1, number2);
                 }
         }
         return Content(Messages.InvalidOperationMessage);

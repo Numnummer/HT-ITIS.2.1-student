@@ -5,10 +5,10 @@ namespace Hw8
 {
     public static class ServiceExtentions
     {
-        public static void AddAllSingletonDependences(this IServiceCollection services)
+        public static void AddCalculatorGroupDependences(this IServiceCollection services)
         {
-            services.AddTransient<ICalculator, Calculator.Calculator>();
-            services.AddTransient<IParser, Parser>();
+            services.AddSingleton<ICalculator, Calculator.Calculator>();
+            services.AddSingleton<IParser, Parser>();
         }
     }
 }

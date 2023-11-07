@@ -3,6 +3,6 @@
     public interface IParser
     {
         Operation ParseOperation(string operation);
-        (double, double, bool) ParseValues(string value1, string value2);
+        bool TryParseValues(string value1, string value2, out double number1, out double number2);
     }
 }

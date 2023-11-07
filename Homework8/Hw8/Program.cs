@@ -11,7 +11,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllersWithViews();
-        builder.Services.AddAllSingletonDependences();
+        builder.Services.AddCalculatorGroupDependences();
 
         var app = builder.Build();
 
