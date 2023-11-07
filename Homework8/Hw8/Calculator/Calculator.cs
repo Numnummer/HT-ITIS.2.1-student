@@ -6,7 +6,7 @@
         {
             if (secondValue==0)
             {
-                throw new InvalidOperationException(Messages.DivisionByZeroMessage);
+                throw new InvalidOperationException();
             }
             return firstValue / secondValue;
         }
