@@ -8,13 +8,36 @@ namespace Hw8.Controllers;
 public class CalculatorController : Controller
 {
     public ActionResult<double> Calculate([FromServices] ICalculator calculator,
+        [FromServices] IParser parser,
         string val1,
         string operation,
         string val2)
     {
-        throw new NotImplementedException();
+        var isValuesCorrect = parser.TryParseValues(val1, val2, out var number1, out var number2);
+        if (!isValuesCorrect)
+        {
+            return Content(Messages.InvalidNumberMessage);
+        }
+        switch (parser.ParseOperation(operation))
+        {
+            case Operation.Plus:
+                return calculator.Plus(number1, number2);
+            case Operation.Minus:
+                return calculator.Minus(number1, number2);
+            case Operation.Multiply:
+                return calculator.Multiply(number1, number2);
+            case Operation.Divide:
+                {
+                    if (number2==0)
+                    {
+                        return Content(Messages.DivisionByZeroMessage);
+                    }
+                    return calculator.Divide(number1, number2);
+                }
+        }
+        return Content(Messages.InvalidOperationMessage);
     }
-    
+
     [ExcludeFromCodeCoverage]
     public IActionResult Index()
     {
