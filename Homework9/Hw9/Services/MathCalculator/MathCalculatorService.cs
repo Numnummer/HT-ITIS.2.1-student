@@ -19,6 +19,10 @@ public class MathCalculatorService : IMathCalculatorService
             expression=ExpressionValidator.MakeNormalExpression(expression);
             return ExpressionBuilder.BuildExpression(expression);
         });
+        if (resultExpression is ConstantExpression constant)
+        {
+            return new CalculationMathExpressionResultDto((double)constant.Value);
+        }
         try
         {
             var visitor = new MyExpressionVisitor();

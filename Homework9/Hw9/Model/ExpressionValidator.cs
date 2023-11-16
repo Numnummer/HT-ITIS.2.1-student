@@ -27,31 +27,31 @@ namespace Hw9.Model
             {
                 return message;
             }
-            var members = normalExpression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            //var members = normalExpression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 1; i < members.Length; i++)
+            for (int i = 1; i < rawExpression.Length; i++)
             {
-                if (mathOperationSymbols.Contains(members[i]))
+                if (mathOperationSymbols.Contains(rawExpression[i]))
                 {
-                    if (members[i-1]=="(")
+                    if (rawExpression[i-1]=='(' && rawExpression[i]!='-')
                     {
                         return MathErrorMessager.InvalidOperatorAfterParenthesisMessage(rawExpression[i].ToString());
                     }
-                    if (mathOperationSymbols.Contains(members[i-1]))
+                    if (mathOperationSymbols.Contains(rawExpression[i-1]))
                     {
-                        return MathErrorMessager.TwoOperationInRowMessage(members[i-1], members[i]);
+                        return MathErrorMessager.TwoOperationInRowMessage(rawExpression[i-1].ToString(), rawExpression[i].ToString());
                     }
                     continue;
                 }
-                if (members[i]==")" &&
-                        mathOperationSymbols.Contains(members[i-1]))
+                if (rawExpression[i]==')' &&
+                        mathOperationSymbols.Contains(rawExpression[i-1]))
                 {
-                    return MathErrorMessager.OperationBeforeParenthesisMessage(members[i-1]);
+                    return MathErrorMessager.OperationBeforeParenthesisMessage(rawExpression[i-1].ToString());
                 }
-                if (!double.TryParse(members[i], out _)
-                    && !otherSymbols.Contains(members[i]))
+                if (!double.TryParse(rawExpression[i].ToString(), out _)
+                    && !otherSymbols.Contains(rawExpression[i]))
                 {
-                    return MathErrorMessager.UnknownCharacterMessage(members[i][0]);
+                    return MathErrorMessager.UnknownCharacterMessage(rawExpression[i]);
                 }
             }
             message = IsNumbersCorrect(rawExpression);
@@ -65,23 +65,32 @@ namespace Hw9.Model
         public static string MakeNormalExpression(string rawExpression)
         {
             var result = new StringBuilder();
-            foreach (var symbol in rawExpression)
+            for (int i = 0; i < rawExpression.Length; i++)
             {
-                if (mathOperationSymbols.Contains(symbol))
+                if (rawExpression[i] == '-' && i+1<rawExpression.Length && char.IsDigit(rawExpression[i+1]))
                 {
-                    result.Append($" {symbol} ");
+                    result.Append('-');
+                    continue;
                 }
-                if (symbol=='(')
+                if (mathOperationSymbols.Contains(rawExpression[i]))
                 {
-                    result.Append($"{symbol} ");
+                    result.Append($" {rawExpression[i]} ");
+                    continue;
                 }
-                if (symbol==')')
+                if (rawExpression[i]=='(')
                 {
-                    result.Append($" {symbol}");
+                    result.Append($"{rawExpression[i]} ");
+                    continue;
                 }
-                if (char.IsDigit(symbol))
+                if (rawExpression[i]==')')
                 {
-                    result.Append(symbol);
+                    result.Append($" {rawExpression[i]}");
+                    continue;
+                }
+                if (char.IsDigit(rawExpression[i]))
+                {
+                    result.Append(rawExpression[i]);
+                    continue;
                 }
             }
             return result.ToString();
