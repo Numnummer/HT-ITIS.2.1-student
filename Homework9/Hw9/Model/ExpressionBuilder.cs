@@ -32,8 +32,6 @@ namespace Hw9.Model
                     case "/":
                         expressionStack.Push(Expression.Divide(first, second));
                         break;
-                    default:
-                        break;
                 }
             }
             return expressionStack.Pop();

@@ -38,7 +38,7 @@ namespace Hw9.Model
                         break;
                 }
             }
-            return node.Update(node.Left, node.Conversion, node.Right); ;
+            return Expression.Constant(DtoHelper.Dto.Result);
         }
     }
 }
