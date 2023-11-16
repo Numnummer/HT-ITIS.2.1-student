@@ -14,13 +14,14 @@ namespace Hw9.Model
             var rightExpression = Task.Run(() => Expression.Lambda<Func<double>>(Visit(node.Right)).Compile().Invoke());
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
+
             lock (_lock)
             {
                 switch (node.NodeType)
                 {
                     case ExpressionType.Add:
                         DtoHelper.Dto.Result=expressions[0]+expressions[1];
-                        return Expression.Constant(DtoHelper.Dto.Result);
+                        break;
                     case ExpressionType.Divide:
                         if (expressions[1]==0)
                         {
@@ -28,18 +29,16 @@ namespace Hw9.Model
                             throw new Exception(DtoHelper.Dto.ErrorMessage);
                         }
                         DtoHelper.Dto.Result=expressions[0]/expressions[1];
-                        return Expression.Constant(DtoHelper.Dto.Result);
+                        break;
                     case ExpressionType.Multiply:
                         DtoHelper.Dto.Result=expressions[0]*expressions[1];
-                        return Expression.Constant(DtoHelper.Dto.Result);
+                        break;
                     case ExpressionType.Subtract:
                         DtoHelper.Dto.Result=expressions[0]-expressions[1];
-                        return Expression.Constant(DtoHelper.Dto.Result);
-                    default:
                         break;
                 }
             }
-            return node.Update(node.Left, node.Conversion, node.Right);
+            return node.Update(node.Left, node.Conversion, node.Right); ;
         }
     }
 }
