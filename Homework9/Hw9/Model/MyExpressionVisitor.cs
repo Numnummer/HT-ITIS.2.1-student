@@ -14,7 +14,6 @@ namespace Hw9.Model
             var rightExpression = Task.Run(() => Expression.Lambda<Func<double>>(Visit(node.Right)).Compile().Invoke());
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
-            Console.WriteLine(node+" "+expressions[0]+" "+expressions[1]+" "+node.NodeType);
             lock (_lock)
             {
                 switch (node.NodeType)
