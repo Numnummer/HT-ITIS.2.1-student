@@ -14,10 +14,21 @@ public class MathCalculatorService : IMathCalculatorService
         {
             return new CalculationMathExpressionResultDto(message);
         }
-        var result = (Func<double>)await Task.Run(() =>
+        var resultExpression = await Task.Run(() =>
         {
-            return ExpressionBuilder.BuildExpression(expression).Compile();
+            expression=ExpressionValidator.MakeNormalExpression(expression);
+            return ExpressionBuilder.BuildExpression(expression);
         });
-        return new CalculationMathExpressionResultDto(result.Invoke());
+        try
+        {
+            var visitor = new MyExpressionVisitor();
+            visitor.Visit(resultExpression);
+        }
+        catch (Exception exception)
+        {
+            return new CalculationMathExpressionResultDto(DtoHelper.Dto.ErrorMessage);
+        }
+
+        return new CalculationMathExpressionResultDto(DtoHelper.Dto.Result);
     }
 }

@@ -13,7 +13,7 @@ namespace Hw9.Controllers
         {
             _mathCalculatorService = mathCalculatorService;
         }
-        
+
         [HttpGet]
         [ExcludeFromCodeCoverage]
         public IActionResult Calculator()
@@ -25,6 +25,7 @@ namespace Hw9.Controllers
         public async Task<ActionResult<CalculationMathExpressionResultDto>> CalculateMathExpression(string expression)
         {
             var result = await _mathCalculatorService.CalculateMathExpressionAsync(expression);
+            Console.WriteLine("faj");
             return Json(result);
         }
     }

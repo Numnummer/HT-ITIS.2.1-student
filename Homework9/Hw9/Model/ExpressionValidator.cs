@@ -31,7 +31,7 @@ namespace Hw9.Model
 
             for (int i = 1; i < members.Length; i++)
             {
-                if (mathOperationSymbols.Contains(rawExpression[i]))
+                if (mathOperationSymbols.Contains(members[i]))
                 {
                     if (members[i-1]=="(")
                     {
@@ -49,7 +49,7 @@ namespace Hw9.Model
                     return MathErrorMessager.OperationBeforeParenthesisMessage(members[i-1]);
                 }
                 if (!double.TryParse(members[i], out _)
-                    && !otherSymbols.Contains(rawExpression[i]))
+                    && !otherSymbols.Contains(members[i]))
                 {
                     return MathErrorMessager.UnknownCharacterMessage(members[i][0]);
                 }
@@ -62,7 +62,7 @@ namespace Hw9.Model
             return string.Empty;
         }
 
-        private static string MakeNormalExpression(string rawExpression)
+        public static string MakeNormalExpression(string rawExpression)
         {
             var result = new StringBuilder();
             foreach (var symbol in rawExpression)

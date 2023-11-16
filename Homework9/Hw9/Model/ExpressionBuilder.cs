@@ -4,7 +4,7 @@ namespace Hw9.Model
 {
     public static class ExpressionBuilder
     {
-        public static LambdaExpression BuildExpression(string expression)
+        public static Expression BuildExpression(string expression)
         {
             var postfixExpression = ExpressionFormConverter.ToPostfixForm(expression);
             var expressionMembers = postfixExpression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -36,8 +36,7 @@ namespace Hw9.Model
                         break;
                 }
             }
-            var result = Expression.Lambda(expressionStack.Pop());
-            return result;
+            return expressionStack.Pop();
         }
     }
 }
