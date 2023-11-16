@@ -27,7 +27,6 @@ namespace Hw9.Model
             {
                 return message;
             }
-            //var members = normalExpression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 1; i < rawExpression.Length; i++)
             {
@@ -67,9 +66,9 @@ namespace Hw9.Model
             var result = new StringBuilder();
             for (int i = 0; i < rawExpression.Length; i++)
             {
-                if (rawExpression[i] == '-' && i+1<rawExpression.Length && char.IsDigit(rawExpression[i+1]))
+                if (i-1>=0 && rawExpression[i] == '-' && rawExpression[i-1]=='(')
                 {
-                    result.Append('-');
+                    result.Append($"-");
                     continue;
                 }
                 if (mathOperationSymbols.Contains(rawExpression[i]))
