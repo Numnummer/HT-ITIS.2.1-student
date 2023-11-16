@@ -115,7 +115,7 @@ namespace Hw9.Model
             var numbers = rawExpression.Split(splitBy, StringSplitOptions.RemoveEmptyEntries);
             foreach (var number in numbers)
             {
-                if (!double.TryParse(number, out _))
+                if (number.Count(symbol => symbol=='.')>1)
                 {
                     return MathErrorMessager.NotNumberMessage(number);
                 }
