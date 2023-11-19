@@ -22,7 +22,7 @@ namespace Hw10.Model
 
             foreach (string token in tokens)
             {
-                if (int.TryParse(token, out _))
+                if (double.TryParse(token, out _))
                 {
                     output.Append(token+' ');
                 }

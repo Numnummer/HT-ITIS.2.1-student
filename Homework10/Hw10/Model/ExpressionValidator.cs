@@ -15,7 +15,6 @@ namespace Hw10.Model
                 return MathErrorMessager.EmptyString;
             }
             var rawExpression = expression.Replace(" ", "");
-            var normalExpression = MakeNormalExpression(rawExpression);
 
             message=IsValidBrackets(rawExpression);
             if (message!=string.Empty)
@@ -47,7 +46,8 @@ namespace Hw10.Model
                 {
                     return MathErrorMessager.OperationBeforeParenthesisMessage(rawExpression[i-1].ToString());
                 }
-                if (!double.TryParse(rawExpression[i].ToString(), out _)
+
+                if (!char.IsDigit(rawExpression[i])
                     && !otherSymbols.Contains(rawExpression[i]))
                 {
                     return MathErrorMessager.UnknownCharacterMessage(rawExpression[i]);
