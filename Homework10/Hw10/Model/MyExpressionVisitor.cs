@@ -10,8 +10,8 @@ namespace Hw10.Model
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var leftExpression = Task.Run(() => Expression.Lambda<Func<double>>(Visit(node.Left)).Compile().Invoke());
-            var rightExpression = Task.Run(() => Expression.Lambda<Func<double>>(Visit(node.Right)).Compile().Invoke());
+            var leftExpression = Task.Factory.StartNew(() => Expression.Lambda<Func<double>>(Visit(node.Left)).Compile().Invoke(), TaskCreationOptions.LongRunning);
+            var rightExpression = Task.Factory.StartNew(() => Expression.Lambda<Func<double>>(Visit(node.Right)).Compile().Invoke(), TaskCreationOptions.LongRunning);
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
 
