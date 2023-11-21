@@ -112,15 +112,20 @@ namespace Hw10.Model
         {
             var splitBy = new char[] { '(', ')', '+', '-', '*', '/' };
             var numbers = rawExpression.Split(splitBy, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var number in numbers)
+            var errorMessage = string.Empty;
+
+            Parallel.ForEach(numbers, (number, state) =>
             {
-                if (number.Count(symbol => symbol=='.')>1)
+                if (number.Count(symbol => symbol == '.') > 1)
                 {
-                    return MathErrorMessager.NotNumberMessage(number);
+                    errorMessage = MathErrorMessager.NotNumberMessage(number);
+                    state.Break();
                 }
-            }
-            return string.Empty;
+            });
+
+            return errorMessage;
         }
+
 
         private static string IsValidBrackets(string rawExpression)
         {
