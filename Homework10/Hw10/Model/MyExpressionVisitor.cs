@@ -6,7 +6,7 @@ namespace Hw10.Model
 {
     public class MyExpressionVisitor : ExpressionVisitor
     {
-        private readonly object _lock = new object();
+        private readonly object _locker = new object();
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
@@ -15,7 +15,7 @@ namespace Hw10.Model
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
 
-            lock (_lock)
+            lock (_locker)
             {
                 switch (node.NodeType)
                 {
