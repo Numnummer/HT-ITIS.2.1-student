@@ -3,10 +3,10 @@ using System.Text;
 
 namespace Hw10.Model
 {
-    public class ExpressionValidator
+    public static class ExpressionValidator
     {
-        private const string mathOperationSymbols = "+-*/";
-        private const string otherSymbols = "().";
+        private static HashSet<char> mathOperationSymbols = new HashSet<char>() { '+', '-', '*', '/' };
+        private static HashSet<char> otherSymbols = new HashSet<char>() { '(', ')', '.' };
         private static string message;
         public static string IsValid(string? expression)
         {

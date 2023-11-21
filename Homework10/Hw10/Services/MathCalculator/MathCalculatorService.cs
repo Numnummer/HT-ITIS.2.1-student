@@ -27,7 +27,7 @@ public class MathCalculatorService : IMathCalculatorService
             var visitor = new MyExpressionVisitor();
             visitor.Visit(resultExpression);
         }
-        catch (Exception exception)
+        catch
         {
             return new CalculationMathExpressionResultDto(DtoHelper.Dto.ErrorMessage);
         }
