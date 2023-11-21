@@ -2,6 +2,7 @@
 using Hw10.Dto;
 using Hw10.ErrorMessages;
 using Hw10.Services.MathCalculator;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hw10.Services.CachedCalculator;
 
@@ -22,22 +23,25 @@ public class MathCachedCalculatorService : IMathCalculatorService
         {
             return new CalculationMathExpressionResultDto(MathErrorMessager.EmptyString);
         }
-        try
+
+        var solved = await _dbContext.SolvingExpressions.FirstOrDefaultAsync(e => e.Expression == expression);
+
+        if (solved != null)
         {
-            var solved = _dbContext.SolvingExpressions.First(e => e.Expression==expression);
-            Thread.Sleep(1000);
             return new CalculationMathExpressionResultDto(solved.Result);
         }
-        catch
+
+        var result = await _simpleCalculator.CalculateMathExpressionAsync(expression);
+
+        _dbContext.SolvingExpressions.Add(new SolvingExpression()
         {
-            var result = await _simpleCalculator.CalculateMathExpressionAsync(expression);
-            _dbContext.SolvingExpressions.Add(new SolvingExpression()
-            {
-                Expression=expression,
-                Result=result.Result
-            });
-            await _dbContext.SaveChangesAsync();
-            return result;
-        }
+            Expression = expression,
+            Result = result.Result
+        });
+
+        await _dbContext.SaveChangesAsync();
+
+        return result;
     }
+
 }

@@ -69,27 +69,22 @@ namespace Hw10.Model
                 if (i-1>=0 && rawExpression[i] == '-' && rawExpression[i-1]=='(')
                 {
                     result.Append($"-");
-                    continue;
                 }
-                if (mathOperationSymbols.Contains(rawExpression[i]))
+                else if (mathOperationSymbols.Contains(rawExpression[i]))
                 {
                     result.Append($" {rawExpression[i]} ");
-                    continue;
                 }
-                if (rawExpression[i]=='(')
+                else if (rawExpression[i]=='(')
                 {
                     result.Append($"{rawExpression[i]} ");
-                    continue;
                 }
-                if (rawExpression[i]==')')
+                else if (rawExpression[i]==')')
                 {
                     result.Append($" {rawExpression[i]}");
-                    continue;
                 }
-                if (char.IsDigit(rawExpression[i]))
+                else
                 {
                     result.Append(rawExpression[i]);
-                    continue;
                 }
             }
             return result.ToString();
