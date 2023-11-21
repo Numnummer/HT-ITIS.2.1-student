@@ -10,8 +10,8 @@ namespace Hw10.Model
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var leftExpression = Task.Factory.StartNew(() => Expression.Lambda<Func<double>>(Visit(node.Left)).Compile().Invoke(), TaskCreationOptions.LongRunning);
-            var rightExpression = Task.Factory.StartNew(() => Expression.Lambda<Func<double>>(Visit(node.Right)).Compile().Invoke(), TaskCreationOptions.LongRunning);
+            var leftExpression = Task.Run(() => ProcessExpression(node.Left));
+            var rightExpression = Task.Run(() => ProcessExpression(node.Right));
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
 
@@ -39,6 +39,15 @@ namespace Hw10.Model
                 }
             }
             return Expression.Constant(DtoHelper.Dto.Result);
+        }
+        private double ProcessExpression(Expression expression)
+        {
+            var result = Visit(expression);
+            if (result is ConstantExpression constant)
+            {
+                return (double)constant.Value;
+            }
+            return Expression.Lambda<Func<double>>(result).Compile().Invoke();
         }
     }
 }
