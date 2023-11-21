@@ -13,7 +13,7 @@ namespace Hw10.Model
             var leftExpression = Task.Run(() => ProcessExpression(node.Left));
             var rightExpression = Task.Run(() => ProcessExpression(node.Right));
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
-            Thread.Sleep(1000);
+            Thread.Sleep(950);
 
             lock (_locker)
             {
