@@ -24,8 +24,11 @@ public class MathCalculatorService : IMathCalculatorService
         }
         try
         {
-            var visitor = new MyExpressionVisitor();
-            visitor.Visit(resultExpression);
+            await Task.Run(() =>
+            {
+                var visitor = new MyExpressionVisitor();
+                visitor.Visit(resultExpression);
+            });
         }
         catch
         {

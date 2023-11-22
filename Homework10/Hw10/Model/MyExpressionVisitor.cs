@@ -1,5 +1,6 @@
 ﻿using Hw10.Dto;
 using Hw10.ErrorMessages;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Hw10.Model
@@ -40,14 +41,11 @@ namespace Hw10.Model
             }
             return Expression.Constant(DtoHelper.Dto.Result);
         }
+
         private double ProcessExpression(Expression expression)
         {
-            var result = Visit(expression);
-            if (result is ConstantExpression constant)
-            {
-                return (double)constant.Value;
-            }
-            return Expression.Lambda<Func<double>>(result).Compile().Invoke();
+            var result = Visit(expression) as ConstantExpression;
+            return (double)result.Value;
         }
     }
 }
