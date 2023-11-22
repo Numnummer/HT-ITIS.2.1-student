@@ -11,10 +11,10 @@ namespace Hw10.Model
 
         public async Task<double> VisitAsync(BinaryExpression node)
         {
-            var leftExpression = Task.Run(() => ProcessExpression(node.Left));
-            var rightExpression = Task.Run(() => ProcessExpression(node.Right));
+            var leftExpression = Task.Run(async () => await ProcessExpression(node.Left));
+            var rightExpression = Task.Run(async () => await ProcessExpression(node.Right));
             var expressions = await Task.WhenAll(leftExpression, rightExpression);
-            //await Task.Delay(1000);
+            await Task.Delay(1000);
             lock (_locker)
             {
                 switch (node.NodeType)
@@ -40,41 +40,14 @@ namespace Hw10.Model
             }
             return DtoHelper.Dto.Result;
         }
-        protected override Expression VisitBinary(BinaryExpression node)
-        {
-            var leftExpression = ProcessExpression(node.Left);
-            var rightExpression = ProcessExpression(node.Right);
-            Thread.Sleep(1000);
-            lock (_locker)
-            {
-                switch (node.NodeType)
-                {
-                    case ExpressionType.Add:
-                        DtoHelper.Dto.Result=leftExpression+rightExpression;
-                        break;
-                    case ExpressionType.Divide:
-                        if (rightExpression==0)
-                        {
-                            DtoHelper.Dto.ErrorMessage=MathErrorMessager.DivisionByZero;
-                            throw new Exception(DtoHelper.Dto.ErrorMessage);
-                        }
-                        DtoHelper.Dto.Result=leftExpression/rightExpression;
-                        break;
-                    case ExpressionType.Multiply:
-                        DtoHelper.Dto.Result=leftExpression*rightExpression;
-                        break;
-                    case ExpressionType.Subtract:
-                        DtoHelper.Dto.Result=leftExpression-rightExpression;
-                        break;
-                }
-            }
-            return Expression.Constant(DtoHelper.Dto.Result);
-        }
 
-        private double ProcessExpression(Expression expression)
+        private async Task<double> ProcessExpression(Expression expression)
         {
-            var result = Visit(expression) as ConstantExpression;
-            return (double)result.Value;
+            if (expression is ConstantExpression constant)
+            {
+                return (double)constant.Value;
+            }
+            return await VisitAsync(expression as BinaryExpression);
         }
     }
 }
