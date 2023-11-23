@@ -1,6 +1,7 @@
 ﻿using Hw10.Dto;
 using Hw10.ErrorMessages;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 
 namespace Hw10.Model
 {
@@ -10,8 +11,8 @@ namespace Hw10.Model
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var leftExpression = Task.Run(() => ProcessExpression(node.Left));
-            var rightExpression = Task.Run(() => ProcessExpression(node.Right));
+            var leftExpression = Task.Factory.StartNew(() => ProcessExpression(node.Left), TaskCreationOptions.AttachedToParent);
+            var rightExpression = Task.Factory.StartNew(() => ProcessExpression(node.Right), TaskCreationOptions.AttachedToParent);
             var expressions = Task.WhenAll(leftExpression, rightExpression).Result;
             Thread.Sleep(1000);
 
@@ -42,12 +43,8 @@ namespace Hw10.Model
         }
         private double ProcessExpression(Expression expression)
         {
-            var result = Visit(expression);
-            if (result is ConstantExpression constant)
-            {
-                return (double)constant.Value;
-            }
-            return Expression.Lambda<Func<double>>(result).Compile().Invoke();
+            var result = Visit(expression) as ConstantExpression;
+            return (double)result.Value;
         }
     }
 }
