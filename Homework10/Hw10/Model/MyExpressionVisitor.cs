@@ -53,11 +53,6 @@ namespace Hw10.Model
                         DtoHelper.Dto.Result=leftExpression+rightExpression;
                         break;
                     case ExpressionType.Divide:
-                        if (rightExpression==0)
-                        {
-                            DtoHelper.Dto.ErrorMessage=MathErrorMessager.DivisionByZero;
-                            throw new Exception(DtoHelper.Dto.ErrorMessage);
-                        }
                         DtoHelper.Dto.Result=leftExpression/rightExpression;
                         break;
                     case ExpressionType.Multiply:

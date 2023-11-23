@@ -10,10 +10,7 @@ namespace Hw10.Model
         private static string message;
         public static string IsValid(string? expression)
         {
-            if (expression==null || string.IsNullOrWhiteSpace(expression))
-            {
-                return MathErrorMessager.EmptyString;
-            }
+
             var rawExpression = expression.Replace(" ", "");
 
             message=IsValidBrackets(rawExpression);
