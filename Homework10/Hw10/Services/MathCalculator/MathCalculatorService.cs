@@ -25,7 +25,7 @@ public class MathCalculatorService : IMathCalculatorService
         try
         {
             var visitor = new MyExpressionVisitor();
-            visitor.Visit(resultExpression);
+            await visitor.VisitAsync(resultExpression as BinaryExpression);
         }
         catch
         {
