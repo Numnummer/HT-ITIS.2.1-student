@@ -9,8 +9,6 @@
     <ItemGroup>
         <Compile Include="Homework4\CalculatorTests.fs" />
         <Compile Include="Homework4\ParserTests.fs" />
-        <Compile Include="Homework5\CalculatorTests.fs" />
-        <Compile Include="Homework5\ParserTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

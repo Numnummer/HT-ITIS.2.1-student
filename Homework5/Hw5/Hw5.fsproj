@@ -6,12 +6,19 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OtherFlags></OtherFlags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OtherFlags></OtherFlags>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="MaybeBuilder.fs" />
     <Compile Include="Message.fs" />
     <Compile Include="Calculator.fs" />
     <Compile Include="Parser.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
 </Project>
