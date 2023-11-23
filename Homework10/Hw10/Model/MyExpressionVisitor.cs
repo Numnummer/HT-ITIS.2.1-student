@@ -14,7 +14,7 @@ namespace Hw10.Model
             var leftExpression = Task.Run(() => ProcessExpression(node.Left));
             var rightExpression = Task.Run(() => ProcessExpression(node.Right));
             var expressions = await Task.WhenAll(leftExpression, rightExpression);
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             lock (_locker)
             {
                 switch (node.NodeType)
