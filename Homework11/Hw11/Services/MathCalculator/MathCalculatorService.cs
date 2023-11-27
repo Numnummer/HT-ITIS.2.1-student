@@ -21,7 +21,7 @@ public class MathCalculatorService : IMathCalculatorService
         });
 
         var visitor = new MyExpressionVisitor();
-        var result = await visitor.VisitAsync((dynamic)resultExpression);
+        double result = await visitor.VisitAsync((dynamic)resultExpression);
 
         return result;
     }

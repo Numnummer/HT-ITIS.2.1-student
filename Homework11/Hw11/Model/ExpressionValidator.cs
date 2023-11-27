@@ -1,4 +1,5 @@
 ﻿using Hw11.ErrorMessages;
+using Hw11.Exceptions;
 using System.Text;
 
 namespace Hw11.Model
@@ -19,12 +20,12 @@ namespace Hw11.Model
             message=IsValidBrackets(rawExpression);
             if (message!=string.Empty)
             {
-                return message;
+                throw new InvalidSyntaxException(message);
             }
             message=IsValidBounds(rawExpression);
             if (message!=string.Empty)
             {
-                return message;
+                throw new InvalidSyntaxException(message);
             }
 
             for (int i = 1; i < rawExpression.Length; i++)
@@ -33,30 +34,30 @@ namespace Hw11.Model
                 {
                     if (rawExpression[i-1]=='(' && rawExpression[i]!='-')
                     {
-                        return MathErrorMessager.InvalidOperatorAfterParenthesisMessage(rawExpression[i].ToString());
+                        throw new InvalidSyntaxException(MathErrorMessager.InvalidOperatorAfterParenthesisMessage(rawExpression[i].ToString()));
                     }
                     if (mathOperationSymbols.Contains(rawExpression[i-1]))
                     {
-                        return MathErrorMessager.TwoOperationInRowMessage(rawExpression[i-1].ToString(), rawExpression[i].ToString());
+                        throw new InvalidSyntaxException(MathErrorMessager.TwoOperationInRowMessage(rawExpression[i-1].ToString(), rawExpression[i].ToString()));
                     }
                     continue;
                 }
                 if (rawExpression[i]==')' &&
                         mathOperationSymbols.Contains(rawExpression[i-1]))
                 {
-                    return MathErrorMessager.OperationBeforeParenthesisMessage(rawExpression[i-1].ToString());
+                    throw new InvalidSyntaxException(MathErrorMessager.OperationBeforeParenthesisMessage(rawExpression[i-1].ToString()));
                 }
 
                 if (!char.IsDigit(rawExpression[i])
                     && !otherSymbols.Contains(rawExpression[i]))
                 {
-                    return MathErrorMessager.UnknownCharacterMessage(rawExpression[i]);
+                    throw new InvalidSymbolException(MathErrorMessager.UnknownCharacterMessage(rawExpression[i]));
                 }
             }
             message = IsNumbersCorrect(rawExpression);
             if (message!=string.Empty)
             {
-                return message;
+                throw new InvalidNumberException(message);
             }
             return string.Empty;
         }
