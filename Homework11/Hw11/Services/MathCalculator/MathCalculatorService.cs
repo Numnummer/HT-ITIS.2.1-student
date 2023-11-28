@@ -1,12 +1,14 @@
 using Hw11.Dto;
 using Hw11.Exceptions;
 using Hw11.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Hw11.Services.MathCalculator;
 
 public class MathCalculatorService : IMathCalculatorService
 {
+    [ExcludeFromCodeCoverage]
     public async Task<double> CalculateMathExpressionAsync(string? expression)
     {
         var message = ExpressionValidator.IsValid(expression);
