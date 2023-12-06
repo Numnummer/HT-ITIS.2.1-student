@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Homework11\Hw11\Hw11.csproj" />
       <ProjectReference Include="..\..\Homework6\Hw6\Hw6.fsproj" />
+      <ProjectReference Include="..\..\Homework8\Hw8\Hw8.csproj" />
     </ItemGroup>
 
 </Project>
