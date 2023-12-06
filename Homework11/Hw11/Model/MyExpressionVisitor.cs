@@ -14,7 +14,7 @@ namespace Hw11.Model
             var rightExpression = Process(node.Right);
 
             var expressions = await Task.WhenAll(leftExpression, rightExpression);
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
             double result = default;
             switch (node.NodeType)
             {
