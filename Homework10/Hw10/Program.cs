@@ -12,7 +12,7 @@ builder.Services
     .AddCachedMathCalculator();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseInMemoryDatabase("InMemoryDb"));
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
